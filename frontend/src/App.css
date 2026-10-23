@@ -441,3 +441,39 @@ html, body, #root {
     opacity: 0;
   }
 }
+
+/* AI Strategy Selector Styling */
+.ai-strategy-select {
+  width: 100%;
+  padding: 0.85rem 1rem;
+  background-color: #160c0a;
+  color: #ffaa00;
+  border: 1px solid #ff4500;
+  border-radius: 8px;
+  font-size: 1rem; /* Larger font size */
+  font-weight: bold;
+  cursor: pointer;
+  outline: none;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+}
+
+.ai-strategy-select:hover {
+  border-color: #ffaa00;
+  box-shadow: 0 0 15px rgba(255, 69, 0, 0.3);
+}
+
+/* Style dropdown options with the requested blue hover/active highlight */
+.ai-strategy-select option {
+  background-color: #160c0a;
+  color: #f4f4f5;
+  padding: 12px;
+  font-size: 0.95rem;
+}
+
+.ai-strategy-select option:hover,
+.ai-strategy-select option:focus,
+.ai-strategy-select option:checked {
+  background-color: #3b82f6 !important; /* Sleek blue highlight */
+  color: #ffffff !important;
+}

@@ -264,18 +264,18 @@ export default function App() {
         <div className="controls-column">
           
           {/* FEATURE 1: STRATEGY SELECTOR */}
-          <div className="fire-panel-base selection-box" style={{ marginBottom: '1rem' }}>
-            <label className="box-title-label">🎯 SELECT AI OPPONENT STRATEGY:</label>
-            <select 
-              value={aiStrategy} 
-              onChange={(e) => setAiStrategy(e.target.value)}
-              style={{ width: '100%', padding: '0.6rem', borderRadius: '4px', backgroundColor: '#160c0a', color: '#ffaa00', border: '1px solid #ff4500', fontWeight: 'bold' }}
-            >
-              <option value="balanced">Balanced Hybrid (Heuristic)</option>
-              <option value="aggressive">Aggressive Rush (Damage Priority)</option>
-              <option value="defensive">Defensive Control (Bench/Stall)</option>
-            </select>
-          </div>
+<div className="fire-panel-base selection-box" style={{ marginBottom: '1rem' }}>
+  <label className="box-title-label">🎯 SELECT AI OPPONENT STRATEGY:</label>
+  <select 
+    value={aiStrategy} 
+    onChange={(e) => setAiStrategy(e.target.value)}
+    className="ai-strategy-select"
+  >
+    <option value="balanced">Balanced Hybrid (Heuristic)</option>
+    <option value="aggressive">Aggressive Rush (Damage Priority)</option>
+    <option value="defensive">Defensive Control (Bench/Stall)</option>
+  </select>
+</div>
 
           <div className="fire-panel-base selection-box">
             <label className="box-title-label">CHOOSE YOUR FIGHTER ROSTER SELECTION:</label>
