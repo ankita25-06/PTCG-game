@@ -1,3 +1,10 @@
+body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  background-color: #0b0604;
+}
+
 :root {
   --text: #6b6375;
   --text-h: #08060d;
@@ -50,16 +57,12 @@
   }
 }
 
-body {
-  margin: 0;
-}
-
 #root {
-  width: 1126px;
+  width: 100%;
   max-width: 100%;
   margin: 0 auto;
   text-align: center;
-  border-inline: 1px solid var(--border);
+  border-inline: none;
   min-height: 100svh;
   display: flex;
   flex-direction: column;
