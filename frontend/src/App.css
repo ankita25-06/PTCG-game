@@ -150,13 +150,14 @@ html, body, #root {
 }
 
 /* Fire Type Modular Glowing Border Panels */
+/* Update your panel base style in App.css */
 .fire-panel-base {
-  background: linear-gradient(145deg, rgba(30, 10, 5, 0.9) 0%, rgba(15, 15, 18, 0.95) 70%);
-  border-radius: 14px;
-  border: 1px solid transparent;
-  border-image: linear-gradient(135deg, #ff4500, #ffaa00, #3a1105) 1;
-  box-shadow: 0 15px 35px rgba(255, 69, 0, 0.12), 0 5px 15px rgba(0, 0, 0, 0.5);
-  overflow: hidden;
+  background: rgba(22, 12, 10, 0.65); /* Semi-transparent dark background (65% opacity) */
+  backdrop-filter: blur(10px);         /* Blurs the background image behind the panel */
+  border: 1px solid rgba(255, 69, 0, 0.4); /* Glowing border */
+  border-radius: 8px;
+  padding: 1rem;
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
 }
 
 .selection-box {
