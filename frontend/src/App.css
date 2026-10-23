@@ -14,7 +14,7 @@ html, body, #root {
 /* Main Container Window Frame */
 .welcome-viewport {
   color: #f4f4f5;
-  position: fixed;
+  position: relative;
   top: 0;
   left: 0;
   right: 0;
@@ -34,20 +34,21 @@ html, body, #root {
   background-image: url("https://images.unsplash.com/photo-1518709268805-4e9042af9f23?q=80&w=1920&auto=format&fit=crop");
   background-size: cover;
   background-position: center;
+  overflow-y: auto;
   z-index: 9999;
 }
 
 /* Background Dimming Overlay */
 .ambient-overlay {
-  position: absolute; /* Changed from fixed to absolute to scroll with the window */
-  top: 0;
+  position: absolute;
   left: 0;
   right: 0;
   bottom: 0;
-  height: 160vh;
+  height: 100%;
+  width:100%;
   background: radial-gradient(circle at center, rgba(10, 5, 2, 0.65) 0%, rgba(5, 2, 1, 0.9) 100%);
-  z-index: 0;
-  pointer-events: none; /* Allows you to click things underneath it */
+  z-index: 1;
+  pointer-events: none; 
 }
 
 /* Title Header Placement Block */
@@ -56,7 +57,12 @@ html, body, #root {
   z-index: 5;
   width: 100%;
 }
-
+.header-wrapper,
+.versus-field,
+.controls-column {
+  position: relative;
+  z-index: 2;
+}
 .header-title {
   font-size: 2.5rem;
   font-weight: 900;
