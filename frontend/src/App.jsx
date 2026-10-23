@@ -10,16 +10,19 @@ export default function App() {
 
   // Feature 1 State: AI Strategy Selection
   const [aiStrategy, setAiStrategy] = useState('balanced');
+  // Add state for custom dropdown menu visibility
+  const [isStrategyOpen, setIsStrategyOpen] = useState(false);
+
+  const strategyLabels = {
+    balanced: 'Balanced Hybrid (Heuristic)',
+    aggressive: 'Aggressive Rush (Damage Priority)',
+    defensive: 'Defensive Control (Bench/Stall)'
+  };
 
   // Feature 2 State: Replay Viewer Episode Data
   const [replayEpisode, setReplayEpisode] = useState([]);
   const [replayStep, setReplayStep] = useState(0);
 
-  // Feature 3 State: Custom Deck Builder Selection (default 60 cards represented by IDs)
-  const [customDeck, setCustomDeck] = useState([
-    25, 25, 25, 25, 6, 6, 6, 6, 150, 150, 
-    ...Array(50).fill(1) // General Trainer & Energy fillers
-  ]);
 
   // Feature 4 State: Local Battle Statistics
   const [stats, setStats] = useState(() => {
@@ -263,19 +266,37 @@ export default function App() {
 
         <div className="controls-column">
           
-          {/* FEATURE 1: STRATEGY SELECTOR */}
-<div className="fire-panel-base selection-box" style={{ marginBottom: '1rem' }}>
-  <label className="box-title-label">🎯 SELECT AI OPPONENT STRATEGY:</label>
-  <select 
-    value={aiStrategy} 
-    onChange={(e) => setAiStrategy(e.target.value)}
-    className="ai-strategy-select"
-  >
-    <option value="balanced">Balanced Hybrid (Heuristic)</option>
-    <option value="aggressive">Aggressive Rush (Damage Priority)</option>
-    <option value="defensive">Defensive Control (Bench/Stall)</option>
-  </select>
-</div>
+          {/* FEATURE 1: CUSTOM FIERY STRATEGY SELECTOR */}
+          <div className="fire-panel-base selection-box" style={{ marginBottom: '1rem', overflow: 'visible' }}>
+            <label className="box-title-label">🎯 SELECT AI OPPONENT STRATEGY:</label>
+            
+            <div className="custom-dropdown-container">
+              <div 
+                className="custom-dropdown-trigger" 
+                onClick={() => setIsStrategyOpen(!isStrategyOpen)}
+              >
+                <span>{strategyLabels[aiStrategy]}</span>
+                <span style={{ color: '#ff7700', fontSize: '0.85rem', transform: isStrategyOpen ? 'rotate(180deg)' : 'rotate(0deg)', transition: 'transform 0.2s' }}>▼</span>
+              </div>
+
+              {isStrategyOpen && (
+                <div className="custom-dropdown-menu">
+                  {Object.entries(strategyLabels).map(([key, label]) => (
+                    <div
+                      key={key}
+                      className={`custom-dropdown-option ${aiStrategy === key ? 'active' : ''}`}
+                      onClick={() => {
+                        setAiStrategy(key);
+                        setIsStrategyOpen(false);
+                      }}
+                    >
+                      {label}
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          </div>
 
           <div className="fire-panel-base selection-box">
             <label className="box-title-label">CHOOSE YOUR FIGHTER ROSTER SELECTION:</label>
@@ -292,13 +313,6 @@ export default function App() {
             </div>
           </div>
 
-          {/* FEATURE 3: DECK CONFIGURATION PREVIEW */}
-          <div className="fire-panel-base" style={{ marginTop: '1rem' }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', color: '#ffaa00', fontSize: '0.85rem' }}>
-              <span>📋 DECK CONFIGURATION (deck.csv):</span>
-              <span><strong>{customDeck.length} / 60 Cards</strong></span>
-            </div>
-          </div>
 
           <div className="fire-panel-base" style={{ marginTop: '1rem' }}>
             <div className="rules-accordion-bar" onClick={() => setShowRules(!showRules)}>
