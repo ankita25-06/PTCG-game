@@ -3,17 +3,11 @@ import random
 from cg.api import Observation, to_observation_class
 
 def read_deck_csv() -> list[int]:
-    """Read deck.csv with robust fallback paths for local testing vs environment execution.
-    
-    Returns:
-        list[int]: A list of 60 card IDs in the deck.
-    """
+    """Read deck.csv with robust fallback paths for local testing vs environment execution."""
     file_path = "deck.csv"
-    # Fallback paths if running from a different directory structure locally
     if not os.path.exists(file_path):
         file_path = "/kaggle_simulations/agent/" + file_path
     if not os.path.exists(file_path):
-        # Check backend or local subfolders if applicable
         if os.path.exists("backend/deck.csv"):
             file_path = "backend/deck.csv"
 
@@ -26,11 +20,24 @@ def read_deck_csv() -> list[int]:
             deck.append(int(csv[i].strip()))
     return deck
 
+def get_action_aggressive(options) -> list[int]:
+    """Prioritize high-damage or rapid offensive options."""
+    for index, option in enumerate(options):
+        opt_str = str(option).lower()
+        if "attack" in opt_str or "damage" in opt_str:
+            return [index]
+    return []
+
+def get_action_defensive(options) -> list[int]:
+    """Prioritize bench setup, energy conservation, or stalling actions."""
+    for index, option in enumerate(options):
+        opt_str = str(option).lower()
+        if "bench" in opt_str or "heal" in opt_str or "energy" in opt_str:
+            return [index]
+    return []
+
 def agent(obs_dict: dict) -> list[int]:
-    """Implement Your Pokémon Trading Card Game Agent.
-    
-    Combines safe input parsing, deck loading, and attack-prioritization heuristics.
-    """
+    """Main agent function with dynamic strategy evaluation."""
     obs: Observation = to_observation_class(obs_dict)
     
     # Handle initial deck submission phase
@@ -39,14 +46,27 @@ def agent(obs_dict: dict) -> list[int]:
     
     options = obs.select.option
     
-    # Priority Rule (from your old code): Attack if an attack option is available!
-    for index, option in enumerate(options):
-        if "attack" in str(option).lower():
-            return [index]
-            
-    # Fallback selection: safe random sampling respecting min/max count constraints
-    min_count = getattr(obs.select, 'minCount', 1)
-    max_count = getattr(obs.select, 'maxCount', len(options))
-    sample_size = max(min_count, min(max_count, len(options)))
+    # Read strategy configuration from environment or default to balanced
+    strategy = os.getenv("AI_STRATEGY", "balanced").lower()
     
-    return random.sample(list(range(len(options))), sample_size)
+    selected_indices = []
+    if strategy == "aggressive":
+        selected_indices = get_action_aggressive(options)
+    elif strategy == "defensive":
+        selected_indices = get_action_defensive(options)
+        
+    # Fallback to standard attack prioritization if strategy yields no specific action
+    if not selected_indices:
+        for index, option in enumerate(options):
+            if "attack" in str(option).lower():
+                selected_indices = [index]
+                break
+                
+    # Final fallback: safe random sampling respecting count constraints
+    if not selected_indices:
+        min_count = getattr(obs.select, 'minCount', 1)
+        max_count = getattr(obs.select, 'maxCount', len(options))
+        sample_size = max(min_count, min(max_count, len(options)))
+        selected_indices = random.sample(list(range(len(options))), sample_size)
+        
+    return selected_indices
